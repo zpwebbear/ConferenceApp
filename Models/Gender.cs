@@ -1,8 +1,7 @@
 namespace ConferenceApp.Models
 {
-    public class Gender
+    public class Gender : BaseReferenceModel
     {
-        public int ID { get; set; }
         public string Value { get; set; }
     }
 

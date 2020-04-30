@@ -31,9 +31,8 @@ namespace ConferenceApp.Models
         public DateTime LastUpdated { get; set; }
     }
 
-    public class ParticipantRole
+    public class ParticipantRole : BaseReferenceModel
     {
-        public int ID { get; set; }
         public string RoleName { get; set; }
     }
 }

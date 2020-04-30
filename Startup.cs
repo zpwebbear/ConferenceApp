@@ -42,6 +42,7 @@ namespace ConferenceApp
             services.AddServerSideBlazor();
             services.AddControllers();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped(typeof(IReferencialService<>), typeof(RefereincialService<>));
             services.AddTransient<CountryService>();
         }
 
