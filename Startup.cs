@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using ConferenceApp.Data;
 using Microsoft.EntityFrameworkCore;
 using ConferenceApp.Models;
+using Microsoft.Data.SqlClient;
 
 namespace ConferenceApp
 {
@@ -28,8 +29,14 @@ namespace ConferenceApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("ConferenceAppDatabase"));
+            builder.UserID = Configuration["DbUserID"];
+            builder.Password = Configuration["DbPassword"];
+
             services.AddDbContext<ConferenceAppContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ConferenceAppDatabase")));
+                options.UseSqlServer(builder.ConnectionString));
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddControllers();
