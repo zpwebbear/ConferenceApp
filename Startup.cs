@@ -13,6 +13,7 @@ using ConferenceApp.Data;
 using Microsoft.EntityFrameworkCore;
 using ConferenceApp.Models;
 using Microsoft.Data.SqlClient;
+using ConferenceApp.Services;
 
 namespace ConferenceApp
 {
@@ -41,6 +42,7 @@ namespace ConferenceApp
             services.AddServerSideBlazor();
             services.AddControllers();
             services.AddSingleton<WeatherForecastService>();
+            services.AddTransient<CountryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
