@@ -11,17 +11,17 @@ namespace ConferenceApp.Models
         public string Email { get; set; }
 
         [Column(TypeName = "Date")]
-        public DateTime DateOfArrival { get; set; }
+        public DateTime? DateOfArrival { get; set; }
 
         [Column(TypeName = "Date")]
-        public DateTime DateOfDeparture { get; set; }
+        public DateTime? DateOfDeparture { get; set; }
         public string CompanyName { get; set; }
         public string PositionInCompany { get; set; }
         public ParticipantRole Role { get; set; }
         public Gender Gender { get; set; }
 
         [Column(TypeName = "Date")]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public Country Country { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

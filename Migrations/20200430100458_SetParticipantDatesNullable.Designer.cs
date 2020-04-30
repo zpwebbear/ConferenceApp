@@ -4,14 +4,16 @@ using ConferenceApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ConferenceApp.Migrations
 {
     [DbContext(typeof(ConferenceAppContext))]
-    partial class ConferenceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200430100458_SetParticipantDatesNullable")]
+    partial class SetParticipantDatesNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
