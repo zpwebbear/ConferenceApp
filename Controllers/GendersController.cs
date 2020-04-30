@@ -44,7 +44,7 @@ namespace ConferenceApp.Controllers
 
         // GET: api/Genders/Male
         [HttpGet("{genderValue}")]
-        public async Task<ActionResult<Gender>> GetGender([FromQuery] string genderValue)
+        public async Task<ActionResult<Gender>> GetGender(string genderValue)
         {
             var gender = await _service.Get(genderValue);
 

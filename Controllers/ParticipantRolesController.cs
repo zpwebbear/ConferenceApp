@@ -40,7 +40,7 @@ namespace ConferenceApp.Controllers
 
         // GET: api/ParticipantRoles/Listener
         [HttpGet("{role}")]
-        public async Task<ActionResult<ParticipantRole>> GetParticipantRole([FromQuery] string role)
+        public async Task<ActionResult<ParticipantRole>> GetParticipantRole(string role)
         {
             var participantRole = await _service.Get(role);
 
