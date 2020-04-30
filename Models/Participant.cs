@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceApp.Models
 {
@@ -25,10 +27,23 @@ namespace ConferenceApp.Models
         public Country Country { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DefaultValue("getutcdate()")]
         public DateTime Inserted { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DefaultValue("getutcdate()")]
         public DateTime LastUpdated { get; set; }
+
+        protected void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Participant>()
+                .Property(b => b.Inserted)
+                .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Participant>()
+                .Property(b => b.LastUpdated)
+                .HasDefaultValueSql("getdate()");
+        }
     }
 
     public class ParticipantRole : BaseReferenceModel
