@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ConferenceApp.Models;
+using ConferenceApp.Services;
 
 namespace ConferenceApp.Controllers
 {
@@ -13,25 +10,25 @@ namespace ConferenceApp.Controllers
     [ApiController]
     public class ParticipantRolesController : ControllerBase
     {
-        private readonly ConferenceAppContext _context;
+        private readonly IParticipantRoleService _service;
 
-        public ParticipantRolesController(ConferenceAppContext context)
+        public ParticipantRolesController(IParticipantRoleService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/ParticipantRoles
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ParticipantRole>>> GetParticipantRoles()
         {
-            return await _context.ParticipantRoles.ToListAsync();
+            return await _service.Get();
         }
 
         // GET: api/ParticipantRoles/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<ParticipantRole>> GetParticipantRole(int id)
         {
-            var participantRole = await _context.ParticipantRoles.FindAsync(id);
+            var participantRole = await _service.Get(id);
 
             if (participantRole == null)
             {
@@ -41,69 +38,18 @@ namespace ConferenceApp.Controllers
             return participantRole;
         }
 
-        // PUT: api/ParticipantRoles/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutParticipantRole(int id, ParticipantRole participantRole)
+        // GET: api/ParticipantRoles/Listener
+        [HttpGet("{role}")]
+        public async Task<ActionResult<ParticipantRole>> GetParticipantRole([FromQuery] string role)
         {
-            if (id != participantRole.ID)
-            {
-                return BadRequest();
-            }
+            var participantRole = await _service.Get(role);
 
-            _context.Entry(participantRole).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParticipantRoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/ParticipantRoles
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<ParticipantRole>> PostParticipantRole(ParticipantRole participantRole)
-        {
-            _context.ParticipantRoles.Add(participantRole);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetParticipantRole", new { id = participantRole.ID }, participantRole);
-        }
-
-        // DELETE: api/ParticipantRoles/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ParticipantRole>> DeleteParticipantRole(int id)
-        {
-            var participantRole = await _context.ParticipantRoles.FindAsync(id);
             if (participantRole == null)
             {
                 return NotFound();
             }
 
-            _context.ParticipantRoles.Remove(participantRole);
-            await _context.SaveChangesAsync();
-
             return participantRole;
-        }
-
-        private bool ParticipantRoleExists(int id)
-        {
-            return _context.ParticipantRoles.Any(e => e.ID == id);
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceApp.Services
 {
-    public class CountryService : RefereincialService<Country>
+    public class CountryService : RefereincialService<Country>, ICountryService
     {
         public CountryService(ConferenceAppContext context) : base(context) { }
         public async Task<Country> Get(string Iso)

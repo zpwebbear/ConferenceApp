@@ -49,7 +49,7 @@ namespace ConferenceApp.Controllers
 
         // GET: api/Countries/UA
         [HttpGet("{iso}")]
-        public async Task<ActionResult<Country>> GetCountry(string Iso)
+        public async Task<ActionResult<Country>> GetCountry([FromQuery] string Iso)
         {
             // I tried to use both - scafolled approach with context and service approach
             // I think service approach is more correct;

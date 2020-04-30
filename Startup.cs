@@ -43,6 +43,9 @@ namespace ConferenceApp
             services.AddControllers();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped(typeof(IReferencialService<>), typeof(RefereincialService<>));
+            services.AddScoped<IGenderService, GenderService>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IParticipantRoleService, ParticipantRoleService>();
             services.AddTransient<CountryService>();
         }
 

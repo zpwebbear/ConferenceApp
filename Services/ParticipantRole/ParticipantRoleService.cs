@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceApp.Services
 {
-    public class ParticipantRoleService : RefereincialService<ParticipantRole>
+    public class ParticipantRoleService : RefereincialService<ParticipantRole>, IParticipantRoleService
     {
         public ParticipantRoleService(ConferenceAppContext context) : base(context) { }
 
