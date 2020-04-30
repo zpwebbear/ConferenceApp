@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ConferenceApp.Data;
+using Microsoft.EntityFrameworkCore;
+using ConferenceApp.Models;
+using Microsoft.Data.SqlClient;
+using ConferenceApp.Services;
 
 namespace ConferenceApp
 {
@@ -26,10 +30,23 @@ namespace ConferenceApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("ConferenceAppDatabase"));
+            builder.UserID = Configuration["DbUserID"];
+            builder.Password = Configuration["DbPassword"];
+
+            services.AddDbContext<ConferenceAppContext>(options =>
+                options.UseSqlServer(builder.ConnectionString));
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddControllers();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped(typeof(IReferencialService<>), typeof(RefereincialService<>));
+            services.AddScoped<IGenderService, GenderService>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IParticipantRoleService, ParticipantRoleService>();
+            services.AddTransient<CountryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
