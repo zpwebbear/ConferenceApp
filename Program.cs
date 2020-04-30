@@ -30,12 +30,16 @@ namespace ConferenceApp
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                 try
                 {
                     var context = services.GetRequiredService<ConferenceAppContext>();
+                    var config = services.GetService<IConfiguration>();
+
                     context.Database.EnsureCreated();
                     ConferenceAppInitializer.Initialize(context);
+                    if(config.GetValue("TestSeed", false)){
+                        ParticipantsTestSeeder.Initialize(context);
+                    }
                 }
                 catch (Exception ex)
                 {
