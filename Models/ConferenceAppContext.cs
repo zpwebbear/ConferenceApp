@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceApp.Models
 {
-    public class ConferenceAppContext : DbContext
+    public class ConferenceAppContext : IdentityDbContext
     {
         public ConferenceAppContext(DbContextOptions<ConferenceAppContext> options)
             : base(options)

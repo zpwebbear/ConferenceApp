@@ -14,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using ConferenceApp.Models;
 using Microsoft.Data.SqlClient;
 using ConferenceApp.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.Identity;
 
 namespace ConferenceApp
 {
@@ -38,10 +41,13 @@ namespace ConferenceApp
 
             services.AddDbContext<ConferenceAppContext>(options =>
                 options.UseSqlServer(builder.ConnectionString));
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ConferenceAppContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddControllers();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
             services.AddScoped(typeof(IReferencialService<>), typeof(RefereincialService<>));
             services.AddScoped<IGenderService, GenderService>();
             services.AddScoped<ICountryService, CountryService>();
@@ -67,6 +73,9 @@ namespace ConferenceApp
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
