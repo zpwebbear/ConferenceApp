@@ -81,6 +81,20 @@ namespace ConferenceApp
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.Use(async (context, next) =>
+                {
+                    var url = context.Request.Path.Value;
+
+                    // Redirect to an external URL
+                    if (url.Equals("/"))
+                    {
+                        context.Response.Redirect("/admin");
+                        return;   // short circuit
+                    }
+
+                    await next();
+                });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
