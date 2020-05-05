@@ -33,7 +33,7 @@ namespace ConferenceApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
 
             var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("ConferenceAppDatabase"));
             builder.UserID = Configuration["DbUserID"];
@@ -43,7 +43,11 @@ namespace ConferenceApp
                 options.UseSqlServer(builder.ConnectionString));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ConferenceAppContext>();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                    {
+                        options.Conventions.AuthorizeFolder("/");
+                    });
             services.AddServerSideBlazor();
             services.AddControllers();
             services.AddSingleton<WeatherForecastService>();
