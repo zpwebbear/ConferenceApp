@@ -22,9 +22,33 @@ namespace ConferenceApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        SqlConnectionStringBuilder connectionStringBuilder;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            Configuration = configuration;
+
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            builder.AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+
+            connectionStringBuilder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("ConferenceAppDatabase"));
+
+            if (env.IsDevelopment())
+            {
+                connectionStringBuilder.UserID = Configuration["DbUserID"];
+                connectionStringBuilder.Password = Configuration["DbPassword"];
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -33,14 +57,8 @@ namespace ConferenceApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("ConferenceAppDatabase"));
-            builder.UserID = Configuration["DbUserID"];
-            builder.Password = Configuration["DbPassword"];
-
             services.AddDbContext<ConferenceAppContext>(options =>
-                options.UseSqlServer(builder.ConnectionString));
+                options.UseSqlServer(connectionStringBuilder.ConnectionString));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ConferenceAppContext>();
             services.AddRazorPages()
@@ -74,13 +92,14 @@ namespace ConferenceApp
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
