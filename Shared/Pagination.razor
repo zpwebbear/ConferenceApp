@@ -1,0 +1,61 @@
+﻿<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @DisabledClass(1)" @onclick="GoToPreviousPage">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true" @onclick:preventDefault>Previous</a>
+        </li>
+        @foreach (var participantPage in Enumerable.Range(1, totalPages))
+        {
+            <li class="page-item @ActiveClass(participantPage)" @key="participantPage" @onclick="(() => ChangePage(participantPage))">
+                <a class="page-link" href="#" @onclick:preventDefault>@participantPage</a>
+            </li>
+        }
+        <li class="page-item @DisabledClass(totalPages)" @onclick="GoToNextPage">
+            <a class="page-link" href="#" @onclick:preventDefault>Next</a>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    [Parameter] public EventCallback<int> GoToPage { get; set; }
+    [Parameter] public int totalPages { get; set; }
+    [Parameter] public int currentPage { get; set; } = 1;
+
+    public void ChangePage(int page)
+    {
+        if(page == currentPage)
+        {
+            return;
+        }
+        GoToPage.InvokeAsync(page);
+    }
+
+    public void GoToPreviousPage()
+    {
+        var page = currentPage - 1;
+        if (page > totalPages || page < 1)
+        {
+            return;
+        }
+        ChangePage(page);
+    }
+
+    public void GoToNextPage()
+    {
+        var page = currentPage + 1;
+        if (page > totalPages || page < 1)
+        {
+            return;
+        }
+        ChangePage(page);
+    }
+
+    public string ActiveClass(int page)
+    {
+        return currentPage == page ? "active" : "";
+    }
+
+    public string DisabledClass(int page)
+    {
+        return currentPage == page ? "disabled" : "";
+    }
+}
