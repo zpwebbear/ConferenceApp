@@ -1,6 +1,9 @@
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ConferenceApp.Helpers;
 using ConferenceApp.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +29,21 @@ namespace ConferenceApp.Services
 
             _logger.LogInformation("Participants total {total}, current page {}", participants.TotalPages, participants.CurrentPage);
             return participants;
+        }
+
+        public async Task<Participant> Get(int ID)
+        {
+            try
+            {
+                return await entity.FirstAsync();
+                //return await entity.SingleAsync(p => p.ID == ID);
+            }
+            catch (NullReferenceException e)
+            {
+                if (e.Source != null)
+                    _logger.LogInformation("IOException source: {0}", e.Source);
+                return await entity.FirstAsync();
+            }
         }
     }
 }

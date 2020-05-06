@@ -22,9 +22,9 @@ namespace ConferenceApp
 {
     public class Startup
     {
-        SqlConnectionStringBuilder connectionStringBuilder;
+        private readonly SqlConnectionStringBuilder connectionStringBuilder;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
 
             IConfigurationBuilder builder = new ConfigurationBuilder()

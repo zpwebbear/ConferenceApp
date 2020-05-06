@@ -3,6 +3,7 @@
 @using ConferenceApp.Services
 @using ConferenceApp.Helpers
 @inject IParticipantService ParticipantService
+@inject NavigationManager NavigationManager
 
 <h2>PARTICIPANTS</h2>
 
@@ -21,7 +22,7 @@
     <tbody>
         @foreach (var participant in participants)
         {
-            <tr>
+            <tr @onclick="()=>GoToParticipant(participant.ID)" style="cursor: pointer">
                 <td>@participant.ID</td>
                 <td>@(participant.FirstName + ' ' + @participant.LastName)</td>
                 <td>@participant.Email</td>
@@ -50,7 +51,7 @@
         currentPage = participants.CurrentPage;
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         FetchParticipants(null);
     }
@@ -58,5 +59,10 @@
     public void ChangePage(int page)
     {
         FetchParticipants(page);
+    }
+
+    public void GoToParticipant(int ParticipantID)
+    {
+        NavigationManager.NavigateTo($"/participants/{ParticipantID}");
     }
 }
