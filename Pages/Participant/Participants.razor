@@ -1,0 +1,15 @@
+@page "/participants"
+@using ConferenceApp.Models
+@using ConferenceApp.Services
+@inject IParticipantService ParticipantService
+
+<h1>PARTICIPANTS</h1>
+
+@code {
+    private Participant[] participants;
+
+    protected override async Task OnInitializedAsync()
+    {
+        @* forecasts = await ParticipantService.GetForecastAsync(DateTime.Now); *@
+    }
+}

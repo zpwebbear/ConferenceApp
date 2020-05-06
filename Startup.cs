@@ -74,6 +74,7 @@ namespace ConferenceApp
             services.AddScoped<IGenderService, GenderService>();
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IParticipantRoleService, ParticipantRoleService>();
+            services.AddScoped<IParticipantService, ParticipantService>();
             services.AddTransient<CountryService>();
         }
 
