@@ -1,15 +1,46 @@
 @page "/participants"
 @using ConferenceApp.Models
 @using ConferenceApp.Services
+@using ConferenceApp.Helpers
+@using System.Linq
 @inject IParticipantService ParticipantService
 
 <h1>PARTICIPANTS</h1>
 
+<ul>
+    @foreach (var p in participants)
+    {
+        <li>@p.FirstName</li>
+    }
+</ul>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    @* @foreach(var page in Enumerable.Range(1, totalPages))
+    {
+        <li class="page-item" @key="page" @onclick="(() => ChangePage(page))"><a class="page-link" href="#">1</a></li>
+    } *@
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
 @code {
-    private Participant[] participants;
+    private PaginatedList<Participant> participants;
+    private int totalPages;
+    private int currentPage = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        @* forecasts = await ParticipantService.GetForecastAsync(DateTime.Now); *@
+        var nextPage = page || currentPage;
+        participants = ParticipantService.PaginatedList(nextPage);
+        totalPages = participants.TotalPages;
+        currentPage = participants.CurrentPage;
     }
+
+    
 }
