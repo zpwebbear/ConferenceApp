@@ -17,6 +17,7 @@ using ConferenceApp.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
+using ConferenceApp.Pages.Participant;
 
 namespace ConferenceApp
 {
@@ -75,7 +76,7 @@ namespace ConferenceApp
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IParticipantRoleService, ParticipantRoleService>();
             services.AddScoped<IParticipantService, ParticipantService>();
-            services.AddTransient<CountryService>();
+            services.AddScoped<ParticipantRazorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

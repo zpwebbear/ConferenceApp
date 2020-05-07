@@ -5,123 +5,125 @@
 @inject IGenderService GenderService
 @inject IParticipantRoleService ParticipantRoleService
 @inject ICountryService CountryService
+@inject NavigationManager NavigationManager
+@inject ParticipantRazorService ParticipantRazorService
 
 <div class="container">
     @if (participant != null)
     {
-    <form>
-        <fieldset disabled="@(editMode == false)">
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="first-name">First Name</label>
-                        <input type="text" class="form-control" id="first-name" value="@participant.FirstName">
+        <form>
+            <fieldset disabled="@(editMode == false)">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" class="form-control" id="first-name" value="@participant.FirstName">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" class="form-control" id="last-name" value="@participant.LastName">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" value="@participant.Email">
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="last-name">Last Name</label>
-                        <input type="text" class="form-control" id="last-name" value="@participant.LastName">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" value="@participant.Email">
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="company">Company</label>
-                        <input type="text" class="form-control" id="company" value="@participant.CompanyName">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" class="form-control" id="company" value="@participant.CompanyName">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <input type="text" class="form-control" id="position" value="@participant.PositionInCompany">
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="position">Position</label>
-                        <input type="text" class="form-control" id="position" value="@participant.PositionInCompany">
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select class="custom-select">
-                            @foreach (var gender in genders)
-                            {
-                                <option selected="@(gender.ID == participant.Gender.ID)">@gender.Value</option>
-                            }
-                        </select>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="custom-select">
+                                @foreach (var gender in genders)
+                                {
+                                    <option selected="@(gender.ID == participant.Gender.ID)">@gender.Value</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="position">Role</label>
+                            <select class="custom-select">
+                                @foreach (var role in roles)
+                                {
+                                    <option selected="@(role.ID == participant.Role.ID)">@role.RoleName</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="position">Role</label>
-                        <select class="custom-select">
-                            @foreach (var role in roles)
-                            {
-                                <option selected="@(role.ID == participant.Role.ID)">@role.RoleName</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <select class="custom-select">
-                            @foreach (var country in countries)
-                            {
-                                <option selected="@(country.ID == participant.Country.ID)">@country.Name</option>
-                            }
-                        </select>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select class="custom-select">
+                                @foreach (var country in countries)
+                                {
+                                    <option selected="@(country.ID == participant.Country.ID)">@country.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="birthdate">Birth Date</label>
+                            <input type="text" class="form-control" id="birthdate" value="@participant.BirthDate">
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="birthdate">Birth Date</label>
-                        <input type="text" class="form-control" id="birthdate" value="@participant.BirthDate">
-                    </div>
-                </div>
-            </div>
 
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="date-of-arrival">Date of Arrival</label>
+                            <input type="text" class="form-control" id="date-of-arrival" value="@participant.DateOfArrival">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="date-of-departure">Date of Departure</label>
+                            <input type="text" class="form-control" id="date-of-departure" value="@participant.DateOfDeparture">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
             <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="date-of-arrival">Date of Arrival</label>
-                        <input type="text" class="form-control" id="date-of-arrival" value="@participant.DateOfArrival">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="date-of-departure">Date of Departure</label>
-                        <input type="text" class="form-control" id="date-of-departure" value="@participant.DateOfDeparture">
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-        <div class="row">
-            <div class="form-group">
-                @if (editMode)
-                {
-                    <button @onclick="UpdateParticipant" @onclick:preventDefault type="submit" class="btn btn-primary ml-1">Submit</button>
+                <div class="form-group">
+                    @if (editMode)
+                    {
+                        <button @onclick="UpdateParticipant" @onclick:preventDefault type="submit" class="btn btn-primary ml-1">Submit</button>
 
-                }
-                @if (!editMode)
-                {
-                    <button @onclick="SetEditMode" @onclick:preventDefault class="btn btn-success ml-1">Edit</button>
-                }
-                <button class="btn btn-danger ml-1">Delete</button>
+                    }
+                    @if (!editMode)
+                    {
+                        <button @onclick="SetEditMode" @onclick:preventDefault class="btn btn-success ml-1">Edit</button>
+                    }
+                    <button class="btn btn-danger ml-1">Delete</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
     }
 </div>
 
@@ -142,6 +144,7 @@
         genders = await GenderService.Get();
         roles = await ParticipantRoleService.Get();
         countries = await CountryService.Get();
+
     }
 
     private void SetEditMode()

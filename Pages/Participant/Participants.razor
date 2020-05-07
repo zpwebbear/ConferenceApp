@@ -1,9 +1,12 @@
 @page "/participants"
+@using Microsoft.AspNetCore.WebUtilities
 @using ConferenceApp.Models
 @using ConferenceApp.Services
 @using ConferenceApp.Helpers
 @inject IParticipantService ParticipantService
 @inject NavigationManager NavigationManager
+@inject ParticipantRazorService ParticipantRazorService
+
 
 <h2>PARTICIPANTS</h2>
 
@@ -39,7 +42,28 @@
 <Pagination GoToPage="ChangePage" totalPages="@totalPages" currentPage="@currentPage" />
 
 @code {
+    [Flags]
+    private enum SortDirections
+    {
+        ASC,
+        DESC
+    }
+
+    [Flags]
+    private enum SortByFields
+    {
+        NAME,
+        EMAIL,
+        COMPANY,
+        POSITION,
+        COUNTRY,
+        REGISTRATION_DATE,
+        STATUS
+    }
+
     private PaginatedList<Participant> participants;
+    private SortByFields sortBy;
+    private SortDirections sortDirection;
     private int totalPages;
     private int currentPage = 1;
 
@@ -53,7 +77,38 @@
 
     protected override void OnInitialized()
     {
+        ParseQueryString();
         FetchParticipants(null);
+    }
+
+    private void _ParseArguments(Dictionary<string, Microsoft.Extensions.Primitives.StringValues> query)
+    {
+        if (query != null && query.TryGetValue("sortBy", out var sortByParam))
+        {
+            sortBy = (SortByFields)Enum.Parse(typeof(SortByFields), sortByParam.First(), true);
+        }
+
+        if (query != null && query.TryGetValue("sortDirection", out var sortDirectionParam))
+        {
+            sortDirection = (SortDirections)Enum.Parse(typeof(SortDirections), sortDirectionParam.First(), true);
+        }
+    }
+
+    private void ParseQueryString()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var query = QueryHelpers.ParseNullableQuery(uri.Query);
+
+        try
+        {
+            this._ParseArguments(query);
+        }
+        catch (ArgumentException e)
+        {
+            Console.WriteLine("ERROR {error}", e.Source);
+            throw;
+        }
+
     }
 
     public void ChangePage(int page)
@@ -63,6 +118,6 @@
 
     public void GoToParticipant(int ParticipantID)
     {
-        NavigationManager.NavigateTo($"/participants/{ParticipantID}");
+        NavigationManager.NavigateTo($"/participants/{ParticipantID}?sortBy=name");
     }
 }
