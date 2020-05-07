@@ -27,20 +27,21 @@ namespace ConferenceApp.Services
                 currentPage,
                 10);
 
-            _logger.LogInformation("Participants total {total}, current page {}", participants.TotalPages, participants.CurrentPage);
             return participants;
         }
 
         public async Task<Participant> Get(int ID)
         {
-            return await entity.SingleAsync(p => p.ID == ID);
+            return await entity.Include(p => p.Country).Include(p => p.Role).Include(p=>p.Gender).SingleAsync(p => p.ID == ID);
         }
 
-        public void Update(Participant participant)
+        public void Update(Participant participant, Country country, ParticipantRole role, Gender gender)
         {
-            var existedParticipant = _context.Participants.Find(participant.ID);
-            var newCountry = _context.Countries.Find(participant.Country.ID);
-            existedParticipant.Country = newCountry;
+            Participant existedParticipant = _context.Participants.Find(participant.ID);
+            existedParticipant.Country = _context.Countries.Find(country.ID);
+            existedParticipant.Gender = _context.Genders.Find(gender.ID);
+            existedParticipant.Role = _context.ParticipantRoles.Find(role.ID);
+
             _context.SaveChanges();
         }
     }

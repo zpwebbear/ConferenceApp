@@ -56,66 +56,49 @@
 
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <CustomInputSelect class="custom-select" @bind-Value="@participant.Gender.ID">
-                            @foreach (var gender in genders)
+                    @if (participantGender != null)
+                    {
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <CustomInputSelect class="custom-select" @bind-Value="@participantGender.ID">
+                                @foreach (var gender in genders)
                                 {
-                                <option selected="@(gender.ID == participant.Gender.ID)" value="@gender.ID">@gender.Value</option>
+                                    <option selected="@(gender.ID == participantGender.ID)" value="@gender.ID">@gender.Value</option>
                                 }
-                        </CustomInputSelect>
-                    </div>
+                            </CustomInputSelect>
+                        </div>
+                    }
+
                 </div>
                 <div class="col">
-                    <div class="form-group">
-                        <label for="position">Role</label>
-                        <CustomInputSelect class="custom-select" @bind-Value="@participant.Role.ID">
-                            @foreach (var role in roles)
+                    @if (participantRole != null)
+                    {
+                        <div class="form-group">
+                            <label for="position">Role</label>
+                            <CustomInputSelect class="custom-select" @bind-Value="@participantRole.ID">
+                                @foreach (var role in roles)
                                 {
-                                <option selected="@(role.ID == participant.Role.ID)" value="@role.ID">@role.RoleName</option>
+                                    <option selected="@(role.ID == participantRole.ID)" value="@role.ID">@role.RoleName</option>
                                 }
-                        </CustomInputSelect>
+                            </CustomInputSelect>
+                        </div>
+                    }
                     </div>
-                </div>
             </div>
-
             <div class="row">
                 <div class="col">
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select class="custom-select">
-                            @foreach (var gender in genders)
+                    @if (participantCountry != null)
+                    {
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <CustomInputSelect class="custom-select" @bind-Value="@participantCountry.ID">
+                                @foreach (var country in countries)
                                 {
-                                <option selected="@(gender.ID == participant.Gender.ID)" value="@gender.ID">@gender.Value</option>
+                                    <option selected="@(country.ID == participantCountry.ID)" value="@country.ID">@country.Name</option>
                                 }
-                        </select>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="position">Role</label>
-                        <select class="custom-select" >
-                            @foreach (var role in roles)
-                                {
-                                <option selected="@(role.ID == participant.Role.ID)" value="@role.ID">@role.RoleName</option>
-                                }
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <CustomInputSelect class="custom-select" @bind-Value="@participant.Country.ID">
-                            @foreach (var country in countries)
-                                {
-                                <option selected="@(country.ID == participant.Country.ID)" value="@country.ID">@country.Name</option>
-                                }
-                            /**/
-                        </CustomInputSelect>
-                    </div>
+                            </CustomInputSelect>
+                        </div>
+                    }
                 </div>
                 <div class="col">
                     <div class="form-group">
@@ -163,6 +146,10 @@
 @code {
     [Parameter] public int ParticipantID { get; set; }
     private Participant participant;
+    private Country participantCountry;
+    private Gender participantGender;
+    private ParticipantRole participantRole;
+
     private List<Gender> genders;
     private List<ParticipantRole> roles;
     private List<Country> countries;
@@ -172,6 +159,10 @@
     protected override async Task OnInitializedAsync()
     {
         participant = await ParticipantService.Get(ParticipantID);
+        participantCountry = new Country() { ID = participant.Country.ID, Name = participant.Country.Name };
+        participantGender = new Gender() { ID = participant.Gender.ID, Value = participant.Gender.Value };
+        participantRole = new ParticipantRole() { ID = participant.Role.ID, RoleName = participant.Role.RoleName };
+
         genders = await GenderService.Get();
         roles = await ParticipantRoleService.Get();
         countries = await CountryService.Get();
@@ -183,9 +174,9 @@
         editMode = true;
     }
 
-    private void UpdateParticipant()
+    private void UpdateParticipant(EditContext editContext)
     {
-        ParticipantService.Update(participant);
+        ParticipantService.Update(participant, participantCountry, participantRole, participantGender);
         editMode = false;
     }
 
