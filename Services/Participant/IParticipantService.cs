@@ -9,5 +9,6 @@ namespace ConferenceApp.Services
     {
         public PaginatedList<Participant> PaginatedList(int currentPage);
         public Task<Participant> Get(int ID);
+        public void Update(Participant participant);
     }
 }

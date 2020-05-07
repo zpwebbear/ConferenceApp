@@ -22,7 +22,7 @@ namespace ConferenceApp.Services
         }
         public PaginatedList<Participant> PaginatedList(int currentPage)
         {
-            var participants =  PaginatedList<Participant>.ToPaginatedList(
+            var participants = PaginatedList<Participant>.ToPaginatedList(
                 entity.AsNoTracking().OrderBy(p => p.FirstName),
                 currentPage,
                 10);
@@ -33,17 +33,15 @@ namespace ConferenceApp.Services
 
         public async Task<Participant> Get(int ID)
         {
-            try
-            {
-                return await entity.FirstAsync();
-                //return await entity.SingleAsync(p => p.ID == ID);
-            }
-            catch (NullReferenceException e)
-            {
-                if (e.Source != null)
-                    _logger.LogInformation("IOException source: {0}", e.Source);
-                return await entity.FirstAsync();
-            }
+            return await entity.SingleAsync(p => p.ID == ID);
+        }
+
+        public void Update(Participant participant)
+        {
+            var existedParticipant = _context.Participants.Find(participant.ID);
+            var newCountry = _context.Countries.Find(participant.Country.ID);
+            existedParticipant.Country = newCountry;
+            _context.SaveChanges();
         }
     }
 }

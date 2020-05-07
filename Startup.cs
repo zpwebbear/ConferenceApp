@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using ConferenceApp.Pages.Participant;
+using ConferenceApp.Pages.Participant.Services;
 
 namespace ConferenceApp
 {

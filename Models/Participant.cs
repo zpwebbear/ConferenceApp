@@ -33,17 +33,6 @@ namespace ConferenceApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [DefaultValue("getutcdate()")]
         public DateTime LastUpdated { get; set; }
-
-        protected void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Participant>()
-                .Property(b => b.Inserted)
-                .HasDefaultValueSql("getdate()");
-
-            modelBuilder.Entity<Participant>()
-                .Property(b => b.LastUpdated)
-                .HasDefaultValueSql("getdate()");
-        }
     }
 
     public class ParticipantRole : BaseReferenceModel

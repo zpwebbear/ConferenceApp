@@ -1,14 +1,12 @@
 ﻿using ConferenceApp.Helpers;
 using ConferenceApp.Services;
-using ConferenceApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace ConferenceApp.Pages.Participant
+namespace ConferenceApp.Pages.Participant.Services
 {
     public class ParticipantRazorService
     {   
