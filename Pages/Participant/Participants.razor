@@ -1,12 +1,9 @@
 @page "/participants"
-@using Microsoft.AspNetCore.WebUtilities
-@using ConferenceApp.Models
 @using ConferenceApp.Services
-@using ConferenceApp.Helpers
 @inject IParticipantService ParticipantService
 @inject NavigationManager NavigationManager
 @inject ParticipantRazorService ParticipantRazorService
-
+@implements IDisposable
 
 <h2>PARTICIPANTS</h2>
 
@@ -23,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var participant in participants)
+        @foreach (var participant in ParticipantRazorService.Participants)
         {
             <tr @onclick="()=>GoToParticipant(participant.ID)" style="cursor: pointer">
                 <td>@participant.ID</td>
@@ -39,85 +36,29 @@
 </table>
 
 
-<Pagination GoToPage="ChangePage" totalPages="@totalPages" currentPage="@currentPage" />
+<Pagination GoToPage="ChangePage" totalPages="@ParticipantRazorService.TotalPages" currentPage="@ParticipantRazorService.CurrentPage" />
 
 @code {
-    [Flags]
-    private enum SortDirections
-    {
-        ASC,
-        DESC
-    }
-
-    [Flags]
-    private enum SortByFields
-    {
-        NAME,
-        EMAIL,
-        COMPANY,
-        POSITION,
-        COUNTRY,
-        REGISTRATION_DATE,
-        STATUS
-    }
-
-    private PaginatedList<Participant> participants;
-    private SortByFields sortBy;
-    private SortDirections sortDirection;
-    private int totalPages;
-    private int currentPage = 1;
-
-    protected void FetchParticipants(int? page)
-    {
-        var nextPage = page ?? currentPage;
-        participants = ParticipantService.PaginatedList(nextPage);
-        totalPages = participants.TotalPages;
-        currentPage = participants.CurrentPage;
-    }
 
     protected override void OnInitialized()
     {
-        ParseQueryString();
-        FetchParticipants(null);
-    }
-
-    private void _ParseArguments(Dictionary<string, Microsoft.Extensions.Primitives.StringValues> query)
-    {
-        if (query != null && query.TryGetValue("sortBy", out var sortByParam))
-        {
-            sortBy = (SortByFields)Enum.Parse(typeof(SortByFields), sortByParam.First(), true);
-        }
-
-        if (query != null && query.TryGetValue("sortDirection", out var sortDirectionParam))
-        {
-            sortDirection = (SortDirections)Enum.Parse(typeof(SortDirections), sortDirectionParam.First(), true);
-        }
-    }
-
-    private void ParseQueryString()
-    {
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        var query = QueryHelpers.ParseNullableQuery(uri.Query);
-
-        try
-        {
-            this._ParseArguments(query);
-        }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine("ERROR {error}", e.Source);
-            throw;
-        }
-
+        ParticipantRazorService.OnChange += StateHasChanged;
+        ParticipantRazorService.ParseQueryString();
+        ParticipantRazorService.FetchParticipants(null);
     }
 
     public void ChangePage(int page)
     {
-        FetchParticipants(page);
+        ParticipantRazorService.FetchParticipants(page);
     }
 
     public void GoToParticipant(int ParticipantID)
     {
-        NavigationManager.NavigateTo($"/participants/{ParticipantID}?sortBy=name");
+        NavigationManager.NavigateTo($"/participants/{ParticipantID}");
+    }
+
+    public void Dispose()
+    {
+        ParticipantRazorService.OnChange -= StateHasChanged;
     }
 }
