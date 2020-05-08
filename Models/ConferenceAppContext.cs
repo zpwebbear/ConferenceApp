@@ -15,5 +15,16 @@ namespace ConferenceApp.Models
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Participant> Participants { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Participant>()
+                .Property(p => p.Inserted)
+                .HasDefaultValueSql("CONVERT(datetime2, GETDATE())");
+
+            modelBuilder.Entity<Participant>()
+                .Property(p => p.LastUpdated)
+                .ValueGeneratedOnAddOrUpdate();
+        }
     }
 }

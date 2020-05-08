@@ -4,14 +4,16 @@ using ConferenceApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ConferenceApp.Migrations
 {
     [DbContext(typeof(ConferenceAppContext))]
-    partial class ConferenceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200508065523_ChangeParticipantDateTimeDefault")]
+    partial class ChangeParticipantDateTimeDefault
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,8 @@ namespace ConferenceApp.Migrations
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CONVERT(datetime2, GETDATE())");
 
                     b.Property<string>("PositionInCompany")
                         .IsRequired()

@@ -5,6 +5,14 @@
     <UserSecretsId>778841d4-4f19-4e29-be41-af740862f8aa</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Migrations\20200505200849_AddIdentity.cs" />
+    <Compile Remove="Migrations\20200505200849_AddIdentity.Designer.cs" />
+    <Compile Remove="Migrations\20200508055737_ChangeParticipantModel.cs" />
+    <Compile Remove="Migrations\20200508055737_ChangeParticipantModel.Designer.cs" />
+    <Compile Remove="Migrations\20200508073722_AddParticipantLastUpdateColumn.cs" />
+    <Compile Remove="Migrations\20200508073722_AddParticipantLastUpdateColumn.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Bogus" Version="29.0.2" />
     <PackageReference Include="CountryData.Bogus" Version="3.29.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.0-rc1.20223.4" />

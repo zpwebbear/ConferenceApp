@@ -42,11 +42,9 @@ namespace ConferenceApp.Models
         public Country Country { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [DefaultValue("getutcdate()")]
         public DateTime Inserted { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [DefaultValue("getutcdate()")]
         public DateTime LastUpdated { get; set; }
     }
 
