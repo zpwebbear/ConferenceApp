@@ -32,10 +32,10 @@ namespace ConferenceApp.Services
 
         public async Task<Participant> Get(int ID)
         {
-            return await entity.Include(p => p.Country).Include(p => p.Role).Include(p=>p.Gender).SingleAsync(p => p.ID == ID);
+            return await entity.Include(p => p.Country).Include(p => p.Role).Include(p => p.Gender).SingleAsync(p => p.ID == ID);
         }
 
-        public void Update(Participant participant, Country country, ParticipantRole role, Gender gender)
+        public void UpdateFromRazor(Participant participant, Country country, ParticipantRole role, Gender gender)
         {
             Participant existedParticipant = _context.Participants.Find(participant.ID);
             existedParticipant.Country = _context.Countries.Find(country.ID);

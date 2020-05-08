@@ -29,5 +29,18 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ConferenceAppDataSet1.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ConferenceAppDataSet1.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ConferenceAppDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ConferenceAppDataSet1.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 
 </Project>
