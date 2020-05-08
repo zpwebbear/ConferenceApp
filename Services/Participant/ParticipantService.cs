@@ -44,5 +44,10 @@ namespace ConferenceApp.Services
 
             _context.SaveChanges();
         }
+
+        public void Delete(Participant participant)
+        {
+            _context.Remove(participant);
+        }
     }
 }

@@ -134,7 +134,7 @@
                 {
                     <button @onclick="SetEditMode" @onclick:preventDefault class="btn btn-success ml-1">Edit</button>
                 }
-                <button class="btn btn-danger ml-1">Delete</button>
+                <button @onclick="DeleteParticipant"  class="btn btn-danger ml-1">Delete</button>
             </div>
         </div>
     </EditForm>
@@ -183,6 +183,12 @@
     private string DisabledClass()
     {
         return editMode ? "" : "disabled";
+    }
+
+    private void DeleteParticipant()
+    {
+        ParticipantService.Delete(participant);
+        NavigationManager.NavigateTo("/participants");
     }
 
     public void Dispose()
