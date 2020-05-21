@@ -4,14 +4,16 @@ using ConferenceApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ConferenceApp.Migrations
 {
     [DbContext(typeof(ConferenceAppContext))]
-    partial class ConferenceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200511140225_RolesSeed")]
+    partial class RolesSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,22 +180,22 @@ namespace ConferenceApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f73b606d-be69-4300-87c6-c9500f5590ff",
-                            ConcurrencyStamp = "7359a49f-81f3-40b2-9a63-875711166933",
+                            Id = "03471798-d73f-4f1d-9549-c23230599044",
+                            ConcurrencyStamp = "09635c8b-a49f-481b-b7cc-7098df0840fd",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "768c6841-3ba3-4b7d-8ca1-5417b9e61567",
-                            ConcurrencyStamp = "af41dfcf-bbe2-4e88-85d1-6696970010b6",
+                            Id = "cbb702ef-1ce2-43f2-9ad9-e7005ed3487d",
+                            ConcurrencyStamp = "b298f2ce-5ac6-4e68-8a1d-295f2328fdfe",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "cd1ba048-ae13-4323-a275-bb901ec2b99e",
-                            ConcurrencyStamp = "af3af302-c8ed-48fc-83bf-4b5be402a99d",
+                            Id = "661da2a5-3776-4feb-8e95-da5686c706ee",
+                            ConcurrencyStamp = "e141ac07-c44e-4806-90c0-1267e4f62240",
                             Name = "User",
                             NormalizedName = "USER"
                         });

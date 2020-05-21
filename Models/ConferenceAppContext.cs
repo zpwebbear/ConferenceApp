@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
 
 namespace ConferenceApp.Models
 {
@@ -11,6 +14,7 @@ namespace ConferenceApp.Models
             : base(options)
         {
         }
+
 
         public DbSet<Country> Countries { get; set; }
         public DbSet<ParticipantRole> ParticipantRoles { get; set; }
@@ -31,6 +35,16 @@ namespace ConferenceApp.Models
 
             modelBuilder.Entity<Participant>().Property<bool>("IsDeleted");
             modelBuilder.Entity<Participant>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+            List<IdentityRole> identityRoles = new List<IdentityRole>();
+            identityRoles.Add(new IdentityRole() { Name = Authorization.Roles.Admin, NormalizedName = Authorization.Roles.Admin.ToUpper() });
+            identityRoles.Add(new IdentityRole() { Name = Authorization.Roles.SuperAdmin, NormalizedName = Authorization.Roles.SuperAdmin.ToUpper() });
+            identityRoles.Add(new IdentityRole() { Name = Authorization.Roles.User, NormalizedName = Authorization.Roles.User.ToUpper() });
+
+            foreach (IdentityRole role in identityRoles)
+            {
+                modelBuilder.Entity<IdentityRole>().HasData(role);
+            }
         }
 
         public override int SaveChanges()
@@ -49,16 +63,20 @@ namespace ConferenceApp.Models
         {
             foreach (var entry in ChangeTracker.Entries())
             {
-                switch (entry.State)
+                if(entry is ISoftDeletable)
                 {
-                    case EntityState.Added:
-                        entry.CurrentValues["IsDeleted"] = false;
-                        break;
-                    case EntityState.Deleted:
-                        entry.State = EntityState.Modified;
-                        entry.CurrentValues["IsDeleted"] = true;
-                        break;
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            entry.CurrentValues["IsDeleted"] = false;
+                            break;
+                        case EntityState.Deleted:
+                            entry.State = EntityState.Modified;
+                            entry.CurrentValues["IsDeleted"] = true;
+                            break;
+                    }
                 }
+
             }
         }
     }

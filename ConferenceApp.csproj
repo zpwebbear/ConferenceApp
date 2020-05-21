@@ -42,5 +42,8 @@
       <LastGenOutput>ConferenceAppDataSet1.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Identity\NewFolder\" />
+  </ItemGroup>
 
 </Project>

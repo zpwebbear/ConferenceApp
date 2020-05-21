@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceApp.Models
 {
-    public class Participant
+    public class Participant : ISoftDeletable
     {
         public int ID { get; set; }
         [Required]
